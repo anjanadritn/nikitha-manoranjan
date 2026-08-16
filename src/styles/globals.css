@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Jost', sans-serif;
+  }
+  
+  body {
+    background-color: #1C0609;
+    color: #FAF5E8;
+  }
+}
+
+/* Custom Gold Shimmer Text Effect */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-light {
+  background: linear-gradient(180deg, #FFF9D6 0%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Gold Border Foil Effect */
+.border-gold-foil {
+  border-image: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #AA771C) 1;
+}
+
+.border-gold-glow {
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+}
+
+/* Luxury Paper Texture Gradient */
+.bg-parchment {
+  background-color: #FAF5E8;
+  background-image: radial-gradient(#d4af3733 0.75px, transparent 0.75px);
+  background-size: 16px 16px;
+}
+
+.bg-maroon-pattern {
+  background-color: #2C090E;
+  background-image: radial-gradient(#d4af3722 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Glassmorphic Overlay */
+.glass-maroon {
+  background: rgba(44, 9, 14, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.glass-gold {
+  background: rgba(250, 245, 232, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+/* Fine Decorative Separator */
+.gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.gold-divider::before,
+.gold-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1C0609;
+}
+::-webkit-scrollbar-thumb {
+  background: #8C6914;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
