@@ -1,9 +1,10 @@
 import React from 'react';
-import { Share2, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { weddingConfig } from '../config/weddingConfig';
 
 export const WhatsAppShare: React.FC = () => {
   const handleShare = () => {
+    // Encodes the message string including the Vercel URL
     const encodedMessage = encodeURIComponent(weddingConfig.whatsAppShare.message);
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
@@ -18,7 +19,7 @@ export const WhatsAppShare: React.FC = () => {
               INVITE FRIENDS & FAMILY
             </h3>
             <p className="font-cormorant text-lg text-champagne-light/90 italic">
-              Share this digital invitation with your loved ones on WhatsApp
+              Share our digital invitation link on WhatsApp
             </p>
           </div>
 

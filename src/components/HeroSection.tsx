@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { weddingConfig } from '../config/weddingConfig';
 import { GaneshaEmblem } from './GaneshaEmblem';
@@ -6,6 +6,30 @@ import { ChevronDown, Calendar, MapPin } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
   const [imageError, setImageError] = useState(false);
+  const [objectPosition, setObjectPosition] = useState('center center');
+
+  useEffect(() => {
+    // Responsive object-position to show both groom (left) and bride (right) faces
+    // Move image down by using higher Y percentage (default center is 50%, moved to 55-60% to show faces)
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        if (window.innerWidth < 640) {
+          // Mobile: shift left and down to show groom's face
+          setObjectPosition('25% 55%');
+        } else if (window.innerWidth < 1024) {
+          // Tablet: slightly shift left and down
+          setObjectPosition('35% 55%');
+        } else {
+          // Desktop: balanced position shifted down to show both faces clearly
+          setObjectPosition('40% 55%');
+        }
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <section
@@ -19,7 +43,7 @@ export const HeroSection: React.FC = () => {
             src={weddingConfig.images.hero}
             alt="Nikitha & Manoranjan Wedding"
             onError={() => setImageError(true)}
-            style={{ objectPosition: weddingConfig.heroPosition }}
+            style={{ objectPosition: objectPosition }}
             className="w-full h-full object-cover scale-105 transition-transform duration-1000 ease-out"
           />
           {/* Dark Vignette Overlay for Readability */}

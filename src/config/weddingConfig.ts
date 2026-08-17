@@ -1,11 +1,3 @@
-export interface GalleryImage {
-  id: string;
-  src: string;
-  title: string;
-  category: 'Couple' | 'Engagement' | 'Family' | 'Pre-Wedding' | 'Wedding Moments';
-  alt: string;
-}
-
 export interface WeddingConfig {
   bride: {
     name: string;
@@ -41,14 +33,14 @@ export interface WeddingConfig {
     dayOfWeek: string;
     dateFormatted: string;
     timeFormatted: string;
-    isoDate: string; // 2026-08-25T18:30:00+05:30
+    isoDate: string;
   };
   wedding: {
     dayOfWeek: string;
     dateFormatted: string;
     timeFormatted: string;
     muhurthamRange: string;
-    targetIsoDateIST: string; // 2026-08-26T04:50:00+05:30
+    targetIsoDateIST: string;
   };
   venue: {
     name: string;
@@ -59,7 +51,7 @@ export interface WeddingConfig {
     googleMapsSearchUrl: string;
     image: string;
   };
-  heroPosition: string; // e.g. "center center", "center 30%", "center 40%"
+  heroPosition: string;
   origins: {
     masarapadi: string;
     bhairapura: string;
@@ -77,13 +69,14 @@ export interface WeddingConfig {
     socialPreview: string;
     ganeshaEmblem: string;
   };
-  galleryImages: GalleryImage[];
+  galleryImages?: any[]; // removed couple gallery usage; kept optional for compatibility
   music: {
     file: string;
     title: string;
   };
   whatsAppShare: {
     message: string;
+    vercelUrl: string;
   };
   calendar: {
     weddingTitle: string;
@@ -93,6 +86,7 @@ export interface WeddingConfig {
   };
 }
 
+// To add more couple photos, place the image in public/images/gallery/ and add its path to the couple gallery array below.
 export const weddingConfig: WeddingConfig = {
   bride: {
     name: 'NIKITHA H.',
@@ -103,7 +97,7 @@ export const weddingConfig: WeddingConfig = {
     place: 'Masarapadi',
     taluk: 'Kodigenahalli Hobli, Madhugiri Taluk',
     districtInfo: 'Masarapadi, Kodigenahalli Hobli, Madhugiri Taluk',
-    image: '/images/bride.jpg',
+    image: '/images/groom.jpg',
   },
   groom: {
     name: 'MANORANJAN B.V.',
@@ -114,7 +108,7 @@ export const weddingConfig: WeddingConfig = {
     place: 'Bhairapura',
     taluk: 'Sasalu, Doddaballapura Taluk',
     districtInfo: 'Bhairapura, Sasalu, Doddaballapura Taluk',
-    image: '/images/groom.jpg',
+    image: '/images/bride.jpeg',
   },
   blessings: {
     deities: 'Sri Masarapadi Anjaneya Swamy & Sri Kavalamma Devi',
@@ -146,7 +140,7 @@ export const weddingConfig: WeddingConfig = {
     googleMapsSearchUrl: 'https://www.google.com/maps/search/?api=1&query=Sri+Ramanjaneya+Kalyana+Mantapa+Near+Sri+Neladanjaneya+Temple+Halli+Bus+Stand+Doddaballapura',
     image: '/images/venue.jpg',
   },
-  heroPosition: 'center center', // Change to "center 30%" or "center 40%" as needed for ideal face framing
+  heroPosition: 'center center',
   origins: {
     masarapadi: 'Masarapadi, Kodigenahalli Hobli, Madhugiri Taluk',
     bhairapura: 'Bhairapura, Sasalu, Doddaballapura Taluk',
@@ -157,63 +151,21 @@ export const weddingConfig: WeddingConfig = {
     { label: 'Family Contact 3', number: '9108404540', display: '+91 91084 04540' },
   ],
   images: {
-    hero: '/images/hero.jpg',
-    bride: '/images/bride.jpg',
-    groom: '/images/groom.jpg',
+    hero: '/images/hero.jpeg',
+    bride: '/images/groom.jpg',
+    groom: '/images/bride.jpeg',
     venue: '/images/venue.jpg',
     socialPreview: '/images/social-preview.jpg',
-    ganeshaEmblem: '/images/ganesha-gold.png',
+    ganeshaEmblem: '/images/ganesha-gold.svg',
   },
-  galleryImages: [
-    {
-      id: 'img-1',
-      src: '/images/couple-1.jpg',
-      title: 'Together in Harmony',
-      category: 'Couple',
-      alt: 'Nikitha and Manoranjan Pre-wedding Portrait',
-    },
-    {
-      id: 'img-2',
-      src: '/images/engagement-1.jpg',
-      title: 'Engagement Celebrations',
-      category: 'Engagement',
-      alt: 'Engagement Ring Ceremony Moments',
-    },
-    {
-      id: 'img-3',
-      src: '/images/family-1.jpg',
-      title: 'Family Blessings',
-      category: 'Family',
-      alt: 'Family gathering and blessings',
-    },
-    {
-      id: 'img-4',
-      src: '/images/couple-2.jpg',
-      title: 'Eternal Promises',
-      category: 'Couple',
-      alt: 'Couple traditional photoshoot',
-    },
-    {
-      id: 'img-5',
-      src: '/images/wedding-1.jpg',
-      title: 'Sacred Rituals',
-      category: 'Wedding Moments',
-      alt: 'Traditional Wedding Muhurtham Rituals',
-    },
-    {
-      id: 'img-6',
-      src: '/images/family-2.jpg',
-      title: 'Cherished Memories',
-      category: 'Family',
-      alt: 'Generations together',
-    },
-  ],
+  // galleryImages removed — couple gallery is intentionally not used in this build
   music: {
-    file: '/music/wedding-music.mp3',
-    title: 'Divine Wedding Background Music',
+    file: '/audio/wedding-song.mpeg',
+    title: 'Wedding Song Background Music',
   },
   whatsAppShare: {
-    message: `You're warmly invited to celebrate the wedding of Nikitha & Manoranjan ❤️\n\nEngagement: 25 August 2026\nWedding: 26 August 2026\n\nSri Ramanjaneya Kalyana Mantapa,\nDoddaballapura Taluk.\n\nWe would love to celebrate this beautiful occasion with you.`,
+    vercelUrl: 'https://nikitha-manoranjan-xw5j.vercel.app/',
+    message: `💍 With the blessings of our elders, we warmly invite you to the wedding celebration of Nikitha H. & Manoranjan B.V. ❤️\n\n📅 25 & 26 August 2026\n\n📍 Sri Ramanjaneya Kalyana Mantapa, Doddaballapura\n\nWe would be delighted to have you with us and bless the couple.\n\n💌 View the complete digital wedding invitation:\nhttps://nikitha-manoranjan-xw5j.vercel.app/`,
   },
   calendar: {
     weddingTitle: 'Wedding Muhurtham: Nikitha H. & Manoranjan B.V.',

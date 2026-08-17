@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Heart, Send, CheckCircle2, Users, Phone, User } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
 
 /* 
   ========================================================================================
@@ -22,36 +23,48 @@ export const RSVPSection: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const savedRSVP = localStorage.getItem('nikitha_manoranjan_rsvp');
-    if (savedRSVP) {
-      setSubmitted(true);
-    }
+    // preserve existing behavior: if session flag present, show submitted state
+    const seen = sessionStorage.getItem('nikitha_manoranjan_rsvp_seen');
+    if (seen) setSubmitted(true);
   }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
-    const rsvpData = {
-      name,
-      phone,
-      guests,
-      attending,
-      message,
-      timestamp: new Date().toISOString(),
-    };
+    try {
+      const payload = {
+        full_name: name.trim(),
+        phone: phone.trim() || null,
+        attendance: attending,
+        guests,
+        message: message.trim() || null,
+      };
 
-    // Save to LocalStorage (Ready to swap with API call)
-    localStorage.setItem('nikitha_manoranjan_rsvp', JSON.stringify(rsvpData));
-    setSubmitted(true);
+      const { error } = await supabase.from('rsvps').insert([payload]);
 
-    if (attending === 'accept') {
-      confetti({
-        particleCount: 100,
-        spread: 80,
-        origin: { y: 0.7 },
-        colors: ['#D4AF37', '#FFF9D6', '#6A1B29'],
-      });
+      if (error) {
+        console.error('RSVP insert error:', error);
+        alert('Unable to submit RSVP right now. Please try again later.');
+        return;
+      }
+
+      // maintain UI state locally for session only (prevents duplicate UI)
+      sessionStorage.setItem('nikitha_manoranjan_rsvp_seen', 'true');
+      setSubmitted(true);
+
+      // notify public list to refresh if this is an accepted RSVP
+      if (attending === 'accept') {
+        window.dispatchEvent(new CustomEvent('rsvp:submitted', { detail: { attending: 'accept' } }));
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.7 },
+          colors: ['#D4AF37', '#FFF9D6', '#6A1B29'],
+        });
+      }
+    } catch (err) {
+      console.error('Unexpected RSVP error', err);
+      alert('Unable to submit RSVP right now. Please try again later.');
     }
   };
 

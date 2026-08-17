@@ -41,7 +41,7 @@ export const CoupleSection: React.FC = () => {
                   src={weddingConfig.bride.image}
                   alt={weddingConfig.bride.fullName}
                   onError={() => setBrideImgError(true)}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700"
                 />
               ) : (
                 /* Royal Vector Avatar Fallback */
@@ -113,7 +113,7 @@ export const CoupleSection: React.FC = () => {
                   src={weddingConfig.groom.image}
                   alt={weddingConfig.groom.fullName}
                   onError={() => setGroomImgError(true)}
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700"
                 />
               ) : (
                 /* Royal Vector Avatar Fallback */

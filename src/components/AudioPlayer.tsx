@@ -10,22 +10,82 @@ interface AudioPlayerProps {
 export const AudioPlayer: React.FC<AudioPlayerProps> = ({ isPlaying, onToggle }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [hasError, setHasError] = useState(false);
+  const autoplayAttemptedRef = useRef(false);
 
+  // Initialize audio element once
   useEffect(() => {
-    const audio = new Audio(weddingConfig.music.file);
+    if (audioRef.current) return; // Already initialized
+
+    const audio = new Audio();
     audio.loop = true;
     audio.volume = 0.4;
+    
+    // Set proper MIME type for MPEG audio
+    const source = document.createElement('source');
+    source.src = weddingConfig.music.file;
+    source.type = 'audio/mpeg';
+    audio.appendChild(source);
 
-    audio.addEventListener('error', () => {
+    const handleError = () => {
+      console.warn('Audio loading error:', audio.error?.message || 'Unknown error');
       setHasError(true);
-    });
+    };
+    
+    const handleLoadedMetadata = () => {
+      console.log('Audio loaded successfully:', weddingConfig.music.file);
+      setHasError(false);
+      
+      // Once audio is loaded, attempt autoplay with random start position
+      if (!autoplayAttemptedRef.current) {
+        autoplayAttemptedRef.current = true;
+        attemptAutoplay(audio);
+      }
+    };
+
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.load();
 
     audioRef.current = audio;
 
+    // Add user interaction listener for autoplay fallback
+    const handleUserInteraction = () => {
+      if (!autoplayAttemptedRef.current || !isPlaying) {
+        attemptAutoplay(audio);
+      }
+    };
+
+    const interactionEvents = ['click', 'tap', 'scroll', 'keydown', 'touchstart'];
+    interactionEvents.forEach((event) => {
+      document.addEventListener(event, handleUserInteraction, { once: true });
+    });
+
     return () => {
       audio.pause();
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      interactionEvents.forEach((event) => {
+        document.removeEventListener(event, handleUserInteraction);
+      });
     };
   }, []);
+
+  const attemptAutoplay = (audio: HTMLAudioElement) => {
+    // Set random start position
+    if (audio.duration && isFinite(audio.duration)) {
+      const randomStart = Math.random() * (audio.duration * 0.8); // Random position up to 80% of duration
+      audio.currentTime = randomStart;
+    }
+    
+    // Try to play
+    audio.play().catch((err) => {
+      console.log('Autoplay blocked by browser:', err.message);
+      // Autoplay is blocked, user will need to click Music button
+    });
+    
+    // Update state to reflect autoplay attempt
+    onToggle();
+  };
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -55,7 +115,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ isPlaying, onToggle })
           <>
             <Music className="w-4 h-4 text-gold-300 animate-spin-slow" />
             <span className="font-cinzel text-xs font-bold tracking-widest uppercase text-gold-gradient">
-              {hasError ? '🎵 MUSIC ON (AUDIO MISSING)' : '🎵 MUSIC ON'}
+              {hasError ? '🎵 MUSIC ON (ERROR)' : '🎵 MUSIC ON'}
             </span>
           </>
         ) : (

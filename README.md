@@ -2,31 +2,42 @@
 
 A luxury, cinematic South Indian digital wedding invitation web application built for the wedding of **Nikitha H. & Manoranjan B.V.**.
 
+🌐 **Production Website URL**: [https://nikitha-manoranjan-xw5j.vercel.app/](https://nikitha-manoranjan-xw5j.vercel.app/)
+
 ---
 
-## 📁 Photo & Asset Placement Guide
+## 📷 Adding Couple Photos
 
-Place your actual wedding photographs and background music directly in the `/public` folder:
+Place couple photographs inside the `public/images/gallery/` folder:
 
 ```text
 public/
-  ├── images/
-  │   ├── hero.jpg             <-- Main hero couple photograph (Full HD)
-  │   ├── bride.jpg            <-- Bride Nikitha H. portrait photo
-  │   ├── groom.jpg            <-- Groom Manoranjan B.V. portrait photo
-  │   ├── venue.jpg            <-- Sri Ramanjaneya Kalyana Mantapa photo
-  │   ├── social-preview.jpg   <-- WhatsApp link preview banner (1200x630px)
-  │   ├── couple-1.jpg         <-- Gallery image 1
-  │   ├── engagement-1.jpg     <-- Gallery image 2
-  │   ├── family-1.jpg         <-- Gallery image 3
-  │   ├── couple-2.jpg         <-- Gallery image 4
-  │   ├── wedding-1.jpg        <-- Gallery image 5
-  │   └── family-2.jpg         <-- Gallery image 6
-  └── music/
-      └── wedding-music.mp3    <-- Wedding background music MP3 track
+  └── images/
+      ├── hero.jpg
+      ├── bride.jpg
+      ├── groom.jpg
+      ├── venue.jpg
+      ├── social-preview.jpg
+      └── gallery/
+          ├── couple-1.jpg
+          ├── couple-2.jpg
+          ├── couple-3.jpg
+          ├── couple-4.jpg
+          └── couple-5.jpg
 ```
 
-> **Note**: If any photo or music file is missing, the website automatically falls back to built-in gold vector emblems, parchment frames, and Web Audio API synthesized tanpura chords so nothing breaks!
+To display additional couple photos in the website gallery, open `src/config/weddingConfig.ts` and add their paths to the `galleryImages` array:
+
+```typescript
+// Example entry in weddingConfig.ts:
+{
+  id: 'couple-7',
+  src: '/images/gallery/couple-7.jpg',
+  title: 'Together Forever',
+  category: 'Couple',
+  alt: 'Nikitha and Manoranjan Couple Portrait 7',
+}
+```
 
 ---
 
@@ -35,8 +46,6 @@ public/
 All wedding details, names, dates, phone numbers, addresses, gallery images, calendar text, and WhatsApp messages are stored in **one single file**:
 
 👉 `src/config/weddingConfig.ts`
-
-You do **NOT** need to edit HTML or component files to change wedding data. Simply update `weddingConfig.ts`.
 
 ---
 
@@ -49,24 +58,17 @@ You do **NOT** need to edit HTML or component files to change wedding data. Simp
 
 ---
 
-## 💌 RSVP & Backend Information
+## 💌 WhatsApp Share & Vercel Deployment
 
-- **Current Implementation**: The RSVP form and Guest Blessings Wall save responses locally using `localStorage` and trigger celebration confetti.
-- **Backend Ready**: To connect to a database (e.g. Supabase, Firebase, or an API endpoint), simply update the submit handler in `src/components/RSVPSection.tsx`. No credentials are exposed in the frontend.
+- The WhatsApp share button automatically generates a WhatsApp invitation containing the live production link: `https://nikitha-manoranjan-xw5j.vercel.app/`
+- Every commit pushed to the `main` branch of your GitHub repository will automatically trigger a Vercel build and update the live website.
 
 ---
 
-## 🚀 Running the Project
+## 🚀 Pushing Updates to GitHub
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Start local dev server:
-   ```bash
-   npm run dev
-   ```
-3. Build for production deployment:
-   ```bash
-   npm run build
-   ```
+```bash
+git add .
+git commit -m "Update gallery to couple photos and add Vercel URL to WhatsApp share"
+git push origin main
+```
