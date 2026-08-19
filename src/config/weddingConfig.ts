@@ -149,6 +149,7 @@ export const weddingConfig: WeddingConfig = {
     { label: 'Primary Contact 1', number: '9164707398', display: '+91 91647 07398' },
     { label: 'Primary Contact 2', number: '8080007398', display: '+91 80800 07398' },
     { label: 'Family Contact 3', number: '9108404540', display: '+91 91084 04540' },
+    { label: 'Family Contact 4', number: '8050007398 ', display: '+91 8050007398 ' },
   ],
   images: {
     hero: '/images/hero.jpeg',
